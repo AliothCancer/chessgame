@@ -1,0 +1,43 @@
+# Knights
+knight white b1
+knight white g1
+knight black b8
+knight black g8
+
+# Bishops
+# bishop white c1
+# bishop white f1
+# bishop black c8
+# bishop black f8
+
+# Kings
+# king white e1
+# king black e8
+
+# Queens
+# queen white d1
+# queen black d8
+
+# Rooks
+# rook white a1
+# rook white h1
+# rook black a8
+# rook black h8
+
+# Pawns
+# pawn white a2
+# pawn white b2
+# pawn white c2
+# pawn white d2
+# pawn white e2
+# pawn white f2
+# pawn white g2
+# pawn white h2
+# pawn black a7
+# pawn black b7
+# pawn black c7
+# pawn black d7
+# pawn black e7
+# pawn black f7
+# pawn black g7
+# pawn black h7
