@@ -1,6 +1,11 @@
 use std::{array, collections::HashMap};
 
-use crate::{ChessBoard, ChessMan};
+use crate::chessmen::ChessMan;
+
+pub struct ChessBoard {
+    chessmen: [[Option<ChessMan>; 8]; 8],
+    chessmen_by_name_id: HashMap<String, ChessMan>,
+}
 
 impl ChessBoard {
     pub fn new() -> Self {

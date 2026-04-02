@@ -22,68 +22,55 @@ public class Main {
 			
 			String prompt = "\nSelected chessman: "+ selector.render() + "\n\n>> ";
 			System.out.print(prompt);
-			String input = sc.nextLine().toLowerCase();
-			String[] cmdArgs = input.split(" ");
-			
-			
-			
-			if (cmdArgs[0].contains("q")) {
-				System.out.println("Exiting....");
-				break;
-			}else if (cmdArgs.length < 2) {
-				System.out.println("commands help:\nshow <col-rank> example: `show a1`,`show h8`");
-				System.out.println("");
-			}else if(cmdArgs[0].contains("sel")) {
-				
-				String nameId = cmdArgs[1];
-				
-				if(game.chessBoard.isValidNameId(nameId)) {
-					selector.clearReachableCell(game);
-					selector.selectByNameId(nameId, game);
-					selector.showReachableCell(game);
-					
-				}else {
-					System.out.println("NameId: " + nameId + " is not valid!");
-				}
-				
-			}else if(cmdArgs[0].contains("show")) {
-				try {
-					ChessCoor chCoor = ChessCoor.fromString(cmdArgs[1]);
-					System.out.println(input + ": " + game.chessBoard.showCell(chCoor));
-				} catch (Exception e) {
-					System.out.println(e.toString());;
-				} 
-			}else if(cmdArgs[0].contains("move")) {
-				
-				if (cmdArgs.length == 4) {
-					boolean missingIn = false;
-					if (!cmdArgs[2].strip().equals("in")) {
-						missingIn = true;
-						System.out.println(cmdArgs[0] + cmdArgs[1] + cmdArgs[2] + cmdArgs[3]);
-						System.out.println("Missing keyword `in`");
-					}
-					if (!missingIn) {
-						String nameId = cmdArgs[1].strip().toLowerCase();
-						
-						try {
-							ChessCoor destCoor = ChessCoor.fromString(cmdArgs[3].strip().toLowerCase());
-							game.chessBoard.moveChessMan(nameId, destCoor);
-							selector.clearReachableCell(game);
-							selector.chMan = null;
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					
-					
-				}else {
-					System.out.println("Bad input: expected 4 arguments got " + cmdArgs.length);
-				}
-			}
+		    Command cmd = Command.parse(sc.nextLine());
+
+		    switch (cmd.type()) {
+		        case QUIT    -> { System.out.println("Exiting...."); return; }
+		        case HELP    -> printHelp();
+		        case SHOW    -> handleShow(cmd.args()[1], game);
+		        case SELECT  -> handleSelect(cmd.args()[1], game, selector);
+		        case MOVE    -> handleMove(cmd.args()[1], cmd.args()[3], game, selector);
+		        case UNKNOWN -> System.out.println("Comando sconosciuto: " + cmd.args()[0]);
+		    }
 			
 		}
 	}
-	
+	private static void handleMove(String nameId,
+			String coor, ChessGame game, Selector selector) {
+		
+		try {
+			ChessCoor destCoor = ChessCoor.fromString(coor.strip().toLowerCase());
+			game.chessBoard.moveChessMan(nameId, destCoor);
+			selector.clearReachableCell(game);
+			selector.chMan = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	private static void handleSelect(String nameId,
+			ChessGame game, Selector selector) {
+		
+		if(game.chessBoard.isValidNameId(nameId)) {
+			selector.clearReachableCell(game);
+			selector.selectByNameId(nameId, game);
+			selector.showReachableCell(game);
+			
+		}else {
+			System.out.println("NameId: " + nameId + " is not valid!");
+		}
+	}
+	private static void handleShow(String coor,
+			ChessGame game) {
+		try {
+			ChessCoor chCoor = ChessCoor.fromString(coor);
+			System.out.println("input: " + game.chessBoard.showCell(chCoor));
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		} 
+	}
+	static void printHelp() {
+		
+	}
 	
 }

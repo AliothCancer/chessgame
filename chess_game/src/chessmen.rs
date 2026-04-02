@@ -1,3 +1,8 @@
+use crate::{
+    coordinates::{ChessCoor, GridCoor},
+    *,
+};
+
 #[derive(Debug, Clone)]
 pub struct ChessMan {
     color: Color,
@@ -6,4 +11,9 @@ pub struct ChessMan {
     position: ChessCoor,
     chessman: ChessManPiece,
     movement: Movement,
+}
+#[derive(Debug, Clone)]
+pub struct Movement {
+    allowed_dirs: Vec<Dir>,
+    generator: fn(GridCoor) -> Vec<GridCoor>,
 }
